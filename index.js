@@ -20,8 +20,8 @@ try{
     const id = await collection.findOne(data);
      
         if(!id){
-            const userdata = await collection.insertOne(data);
-            res.status(200).json(JSON.stringify(userdata));
+            const userdata = await collection.insertMany(data);
+            res.status(200).JSON(stringify(userdata));
             return ;
         }
         else {
