@@ -20,19 +20,18 @@ try{
     const id = await collection.findOne(data);
      
         if(!id){
-     const userdata = await collection.insertMany(data);
-     res.status(200).JSON(stringify(userdata));
-     return ;
-     
+            const userdata = await collection.insertMany(data);
+            res.status(200).JSON(stringify(userdata));
+            return ;
         }
         else {
-               res.status(200) ;
-               return ;
+            res.status(200) ;
+            return ;
         } 
 }
- catch(err){  
-    res.status(500) ;
- }
+ catch(err){
+     res.status(500) ;
+}
         
 });
 
