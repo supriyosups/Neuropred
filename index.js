@@ -11,47 +11,28 @@ app.use(express.json());
 //app.use(bodyParser.json());
 
 // Register User
-app.post("/signup", async (req, res) => {
-    const { patient_id } = req.body;
+app.post("/signup",  async (req, res) => {
 
-    try {
-        // Check if patient ID is provided
-        if (!patient_id) {
-            return res.status(400).send("Patient ID is required");
-        }
-
-        // Check if the user already exists
-        const existingUser = await collection.findOne({ patient_id });
-        if (existingUser) {
-            return res.status(400).send("User already exists");
-        }
-
-        // Initialize all values to 0 by default
-        const newUser = {
-            patient_id,
-            taps: {
-                Tap_no: 0,
-                median_inter_tap_1: 0,
-                CorrectTap: 0,
-                IncorrectTap: 0,
-                median_inter_tap_2: 0,
-                Offset_distance: 0
-            }
-        };
-
-        // Insert the new user into the collection
-        const result = await collection.insertMany(newUser);
-
-        // Check if user insertion was successful
-        if (result.insertedCount === 1) {
-            return res.status(201).json({ message: "User created successfully", user: result.ops[0] });
-        } else {
-            return res.status(500).send("Failed to create user");
-        }
-    } catch (error) {
-        console.error("Error creating user:", error);
-        return res.status(500).send("Internal Server Error");
+    const data = {
+        patient_id: req.body.patient_id 
     }
+try{
+    const id = await collection.findOne(data);
+     
+        if(!id){
+            const userdata = await collection.insertMany(data);
+            res.status(200).json(userdata.ops[0]);
+            return ;
+        }
+        else {
+            res.status(200).send("User already exists");
+            return ;
+        } 
+}
+ catch(err){
+     res.status(500).send(err.message);
+}
+        
 });
 
 // Login user 
