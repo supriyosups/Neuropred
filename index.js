@@ -12,7 +12,7 @@ app.use(express.json());
 
 // Register User
 app.post("/signup", async (req, res) => {
-    const { patient_id } = req.body.patient_id;
+    const { patient_id } = req.body;
 
     try {
         // Check if patient ID is provided
