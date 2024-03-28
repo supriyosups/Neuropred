@@ -76,13 +76,16 @@ app.post("/tapping", async (req, res) => {
 
   try {
       const result = await collection.findOneAndUpdate(query, update, { upsert: true, new: true });
-      res.status(200).json(result);
+      if (result) {
+          res.status(200).json(result);
+      } else {
+          res.status(200).json({ message: "New document created", new_document: true });
+      }
   } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
   }
 });
-
 app.get("/tapping", async (req, res) => {
   const patientId = req.body.patient_id;
 
