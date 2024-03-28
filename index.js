@@ -41,7 +41,7 @@ try{
 app.post("/tapping", async (req, res) => {
   const query = {
       patient_id: req.body.patient_id,
-  };
+  }
 
   const update = {
       $push: {
@@ -54,7 +54,7 @@ app.post("/tapping", async (req, res) => {
               Offset_distance: req.body.offset_distance
           }
       }
-  };
+  }
 
   try {
       const result = await collection.findOneAndUpdate(query, update, { upsert: true, new: true });
