@@ -22,7 +22,7 @@ try{
      
         if(!id){
             const userdata = await collection.insertMany(data);
-          //  res.status(200).JSON(stringify(userdata));
+            res.status(200).json(userdata);
             return ;
         }
         else {
