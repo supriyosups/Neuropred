@@ -36,26 +36,7 @@ try{
         
 });
 
-// Login user 
-// app.post("/login", async (req, res) => {
-//      const query = {
-//         patient_id: req.body.patient_id 
-//      }
 
-//      const result = await collection.findOne(query);
-
-//         if(result != null){
-//             const objToSend ={
-//                 patient_id: result.patient_id
-                
-//             }
-//             res.status(200).send(JSON.stringify(objToSend));
-//         }   
-//         else{
-//             res.status(404).send(); 
-//         } 
-     
-// });
     
 app.post("/tapping", async (req, res) => {
   const query = {
@@ -77,16 +58,14 @@ app.post("/tapping", async (req, res) => {
 
   try {
       const result = await collection.findOneAndUpdate(query, update, { upsert: true, new: true });
-      if (result) {
-          res.status(200).json(result);
-      } else {
-          res.status(200).json({ message: "New document created", new_document: true });
-      }
+      res.status(200).json(result);
   } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
   }
 });
+
+
 app.get("/tapping", async (req, res) => {
   const patientId = req.body.patient_id;
 
