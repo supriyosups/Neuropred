@@ -39,30 +39,38 @@ try{
 
     
 app.post("/tapping", async (req, res) => {
-  const query = {
-      patient_id: req.body.patient_id,
-  }
+    try {
+        const { patient_id, tap_no, median_inter_tap_1, correct_tap, incorrect_tap, median_inter_tap_2, offset_distance } = req.body;
 
-  const update = {
-      $push: {
-          taps: {
-              Tap_no: req.body.tap_no,
-              median_inter_tap_1: req.body.median_inter_tap_1,
-              CorrectTap: req.body.correct_tap,
-              IncorrectTap: req.body.incorrect_tap,
-              median_inter_tap_2: req.body.median_inter_tap_2,
-              Offset_distance: req.body.offset_distance
-          }
-      }
-  }
+        // Construct query to find the patient
+        const query = { patient_id };
 
-  try {
-      const result = await collection.findOneAndUpdate(query, update, { upsert: true, new: true });
-      res.status(200).json(result);
-  } catch (error) {
-      console.error(error);
-      res.status(500).send("Internal Server Error");
-  }
+        // Construct update operation to push tapping data into the taps array
+        const update = {
+            $push: {
+                taps: {
+                    Tap_no: tap_no,
+                    median_inter_tap_1: median_inter_tap_1,
+                    CorrectTap: correct_tap,
+                    IncorrectTap: incorrect_tap,
+                    median_inter_tap_2: median_inter_tap_2,
+                    Offset_distance: offset_distance
+                }
+            }
+        };
+
+        // Options for upsert and returning new document
+        const options = { upsert: true, new: true };
+
+        // Perform update operation
+        const result = await collection.findOneAndUpdate(query, update, options);
+
+        // Send response
+        res.status(200).json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 
